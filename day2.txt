@@ -1,0 +1,81 @@
+ex. 6 design , configure  for telstra using 10.0.0.0/8 with 1700 agents and teamleaders vlan 28
+CSi
+11bits
+32 - 11 = /21 ;  3rd 8i
+
+10.0.8.0 /21 network telstra.com
+10.0.16.0 /21 not telstra.com
+10.0.8.1 /21 1st usable(panganay)
+10.0.7.255 broadcast(bunso)
+
+design and config
+@D1: Getting MSP experience:
+conf t
+vlan 28
+name Telstra
+exit
+int vlan 28
+no shut
+ip add 10.0.8.1 255.255.248.0
+exit
+ip dhcp excluded-add 10.0.8.1 10.0.8.50
+ip dhcp pool MSP-Telstra
+network 10.0.8.0 255.255.248.0
+default-router 10.0.8.1
+end
+
+@A1:
+conf t
+int e0/0
+switchport mode access
+switchport access vlan 28
+do sh vlan br
+end
+
+@P1
+conf t
+int e0/0
+no shut
+ip add dhcp
+do bp
+
+
+ex. 7 design , configure  for BHPmines.au using 10.0.0.0/8 with 8500 agents and teamleaders vlan 57
+convert  14bits
+32 - 14 = /18 3rd 64i
+10.0.64.0 network add ni BHPmines.com
+10.0.128.0 not BHPmines.com
+first usable or bunso is 10.0.64.1 /18
+broadcast(bunso) 10.0.127.255
+
+design and config
+@D1: Getting BHPminesexperience:
+conf t
+vlan 57
+name BHPmines
+exit
+int vlan 57
+no shut
+ip add 10.0.64.1 255.255.192.0
+exit
+ip dhcp excluded-add 10.0.64.1 10.0.64.50
+ip dhcp pool MSP-BHPmines
+network 10.0.64.0 255.255.192.0
+default-router 10.0.64.1
+end
+
+@A2:
+conf t
+int e1/0
+switchport mode access
+switchport access vlan 57
+do sh vlan br
+end
+
+@P2
+conf t
+int e1/0
+no shut
+ip add dhcp
+do bp
+
